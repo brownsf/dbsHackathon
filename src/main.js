@@ -2,8 +2,11 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+
 import App from './App';
 import router from './router';
+
+import store from './store';
 
 Vue.use(Vuetify);
 Vue.config.productionTip = false;
@@ -12,6 +15,10 @@ Vue.config.productionTip = false;
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
+  beforeCreate() {
+    this.$store.commit('initialiseStore');
+  },
   template: '<App/>',
 });

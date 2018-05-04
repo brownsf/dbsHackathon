@@ -1,22 +1,23 @@
 <template>
   <div id="app">
     <v-app>
+      <header-comp />
       <v-content>
         <v-container>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <div class="headline">Hello world</div>
-      </v-flex>
-      </v-layout>
-      </v-container>
-        <router-view/>
+          <router-view/>
+        </v-container>
       </v-content>
     </v-app>
   </div>
 </template>
 
 <script>
+import headercomp from './components/Header';
+
 export default {
-  name: "App"
+  name: 'App',
+  components: {
+    'header-comp': headercomp,
+  },
 };
 </script>
