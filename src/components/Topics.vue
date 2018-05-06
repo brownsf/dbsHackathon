@@ -1,9 +1,9 @@
 <template>
   <v-layout row>
     <v-flex
-      xs12
-      sm8
-      offset-sm2>
+      sm12
+      md8
+      offset-md2>
       <v-card>
         <v-toolbar
           color="teal"
@@ -29,6 +29,14 @@
               <v-list-tile-title>{{ topic.name }}</v-list-tile-title>
               <v-list-tile-sub-title>{{ topic.description }}</v-list-tile-sub-title>
             </v-list-tile-content>
+            <v-list-tile-action @click="vote(topic.id)">
+              <v-badge
+                left
+                color="red">
+                <span slot="badge">{{ topic.votes }}</span>
+                <v-icon>thumb_up</v-icon>
+              </v-badge>
+            </v-list-tile-action>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -72,7 +80,7 @@
           <v-btn
             color="primary"
             flat
-            @click.stop="addDialog=false">Save</v-btn>
+            @click="saveTopic">Save</v-btn>
 
           <v-btn
             color="secondary"
@@ -81,6 +89,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+     <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+        scrollable
+      >
+      comments go here
+     </v-dialog>
   </v-layout>
 
 </template>
@@ -108,6 +125,22 @@ export default {
     } else {
       this.$router.push('/login');
     }
+  },
+  methods: {
+    saveTopic() {
+      this.$store
+        .dispatch('addTopic', {
+          name: this.name,
+          description: this.description,
+        })
+        .then(() => {
+          this.addDialog = false;
+          this.$store.dispatch('getAllTopics');
+        });
+    },
+    vote(id) {
+      this.$store.dispatch('vote', { id }).then(() => {});
+    },
   },
 };
 </script>

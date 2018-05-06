@@ -14,6 +14,8 @@ const store = new Vuex.Store({
     currentUser: {},
     error: false,
     topicLoad: false,
+    loginError: false,
+    loginErrorMessage: '',
   },
   getters: {
     isAuth: state => state.authenticated,
@@ -21,13 +23,19 @@ const store = new Vuex.Store({
   },
   mutations: {
     initialiseStore(state) {
-      console.log(localStorage.getItem('storeHack'));
       // Check if the ID exists
       if (localStorage.getItem('storeHack')) {
-        console.log(localStorage.getItem('storeHack'));
         // Replace the state object with the stored item
-        this.replaceState(Object.assign(state, JSON.parse(localStorage.getItem('storeHack'))));
+        this.replaceState(
+          Object.assign(state, {
+            ...JSON.parse(localStorage.getItem('storeHack')),
+            loginError: false,
+          }),
+        );
       }
+    },
+    SOCKET_NEWTOPIC: (state, message) => {
+      state.topics.push(...message);
     },
     updateUser(state, data) {
       state.currentUser = data;
@@ -49,6 +57,27 @@ const store = new Vuex.Store({
       state.topicError = true;
       state.topicLoad = false;
     },
+    savingTopic(state) {
+      state.topicAddError = false;
+      state.topicAddLoad = true;
+    },
+    addedTopic(state) {
+      state.topicAddError = false;
+      state.topicAddLoad = false;
+    },
+    errorSaveTopic(state, message) {
+      state.topicError = true;
+      state.topicLoad = false;
+      state.topicErrorMessage = message;
+    },
+    errorLogin(state, { message }) {
+      state.loginError = true;
+      state.loginErrorMessage = message;
+    },
+    startLogin(state) {
+      state.loginError = false;
+      state.loginErrorMessage = '';
+    },
   },
   actions: {
     register(context, user) {
@@ -63,15 +92,19 @@ const store = new Vuex.Store({
       );
     },
     login(context, user) {
-      return new Promise(resolve =>
-        axios.post(`${apiHost}/api/login`, user).then(
+      return new Promise((resolve) => {
+        context.commit('startLogin');
+        return axios.post(`${apiHost}/api/login`, user).then(
           (response) => {
             context.commit('updateUser', response.data);
             resolve();
           },
-          error => context.commit('errorLogin', error),
-        ),
-      );
+          error => context.commit('errorLogin', error.response.data),
+        );
+      });
+    },
+    loginReset(context) {
+      context.commit('startLogin');
     },
     getAllTopics(context) {
       context.commit('loadTopics');
@@ -97,7 +130,7 @@ const store = new Vuex.Store({
         axios({
           method: 'post',
           url: `${apiHost}/api/topics`,
-          body: { topic },
+          data: { ...topic },
           headers: {
             USER_ID: context.getters.userId,
           },

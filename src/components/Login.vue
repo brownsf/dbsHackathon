@@ -31,18 +31,35 @@
           counter
           required
         />
+        <v-alert
+          :value="error"
+          type="error">
+          {{ errorMessage }}
+        </v-alert>
 
         <v-btn
           :disabled="!valid"
           @click="submit"
         >submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
+        <p class="newAccount"><router-link to="register">Create new account</router-link></p>
       </v-form>
     </v-flex>
   </v-layout>
 </template>
 
+<style scoped>
+.newAccount{
+  margin-top: 15px
+}
+.newAccount a{
+  text-decoration: none;
+}
+</style>
+
+
 <script>
+import { mapState } from 'vuex';
 
 export default {
   data: () => ({
@@ -57,7 +74,13 @@ export default {
       v => !!v || 'Password is required',
     ],
   }),
-
+  computed: mapState({
+    error: state => state.loginError || false,
+    errorMessage: state => state.loginErrorMessage,
+  }),
+  created() {
+    this.$store.dispatch('loginReset')
+  },
   methods: {
     submit() {
       if (this.$refs.form.validate()) {

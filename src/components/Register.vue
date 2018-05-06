@@ -47,6 +47,7 @@
 
         <v-btn
           :disabled="!valid"
+          class="sbButton"
           @click="submit"
         >submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
