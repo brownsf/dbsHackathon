@@ -2,7 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import VueSocketio from 'vue-socket.io';
+import VueSocketio from 'vue-socket.io-extended';
 import socketio from 'socket.io-client';
 
 import App from './App';

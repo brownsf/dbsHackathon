@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
-import Register from '@/components/Register';
+import Login from '@/components/Login';
 
 Vue.use(Vuex);
 describe('Register', () => {
@@ -26,7 +26,7 @@ describe('Register', () => {
     localVue.use(VueRouter);
     localVue.use(Vuetify);
 
-    wrp = mount(Register, {
+    wrp = mount(Login, {
       localVue,
       router,
     });
@@ -36,13 +36,13 @@ describe('Register', () => {
     expect(wrp.html()).toMatchSnapshot();
   });
   it('should have a text input', () => {
-    const Constructor = Vue.extend(Register);
+    const Constructor = Vue.extend(Login);
     const vm = new Constructor().$mount();
     expect(vm.$el.querySelector('.sbButton').textContent).toEqual('submit');
   });
 
   it('clicks the button', () => {
-    const wrapper = mount(Register, { store });
+    const wrapper = mount(Login, { store });
     wrapper.vm.$refs.form.validate = () => true;
     wrapper.find('.sbButton').trigger('click');
     expect(actions.register.mock.calls).toHaveLength(1);

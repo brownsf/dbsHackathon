@@ -22,22 +22,28 @@
         <v-list
           two-line
           subheader>
-          <v-list-tile
-            v-for="topic in topics"
-            :key="topic.id">
-            <v-list-tile-content>
-              <v-list-tile-title>{{ topic.name }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ topic.description }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action @click="vote(topic.id)">
-              <v-badge
-                left
-                color="red">
-                <span slot="badge">{{ topic.votes }}</span>
-                <v-icon>thumb_up</v-icon>
-              </v-badge>
-            </v-list-tile-action>
-          </v-list-tile>
+          <template
+            v-for="topic in getTopics"
+          >
+            <div
+              :key="topic.id"
+              class="topicItem">
+              <v-list-tile>
+                <v-list-tile-content @click="selectTopic(topic)">
+                  <v-list-tile-title>{{ topic.name }}</v-list-tile-title>
+                  <v-list-tile-sub-title>{{ topic.description }}</v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action @click="vote(topic.id)">
+                  <v-badge
+                    left
+                    color="red">
+                    <span slot="badge">{{ topic.votes }}</span>
+                    <v-icon>thumb_up</v-icon>
+                  </v-badge>
+                </v-list-tile-action>
+              </v-list-tile>
+            </div>
+          </template>
         </v-list>
       </v-card>
     </v-flex>
@@ -89,36 +95,61 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-     <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-        scrollable
-      >
-      comments go here
-     </v-dialog>
+    <v-dialog
+      v-model="showDetails"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+      scrollable
+    >
+      <comments-comp
+        :selected="selectedTopic.id"
+        @close="showDetails=false" />
+    </v-dialog>
   </v-layout>
 
 </template>
+<style scoped>
+.topicItem {
+  cursor: pointer;
+}
+.topicItem:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+</style>
+
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
+import comments from './Comments';
 
 export default {
+  components: {
+    'comments-comp': comments,
+  },
   data: () => ({
     addDialog: false,
     description: '',
     name: '',
+    showDetails: false,
+    selectedTopic: {},
     descRules: [
       v => !!v || 'Description is required',
       v => v.length <= 25 || 'Max 25 characters',
     ],
+    selectTopic(topic) {
+      console.log(topic);
+      this.showDetails = true;
+      this.selectedTopic = topic;
+    },
   }),
 
-  computed: mapState({
-    topics: state => state.topics,
-    loading: state => state.topicLoad,
-  }),
+  computed: {
+    ...mapState({
+      topics: state => state.topics,
+      loading: state => state.topicLoad,
+    }),
+    ...mapGetters(['getTopics']),
+  },
   created() {
     if (this.$store.getters.isAuth) {
       this.$store.dispatch('getAllTopics');

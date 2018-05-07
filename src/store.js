@@ -16,10 +16,15 @@ const store = new Vuex.Store({
     topicLoad: false,
     loginError: false,
     loginErrorMessage: '',
+    singleTopic: {},
+    singleTopicError: {},
+    singleTopicLoad: {},
   },
   getters: {
     isAuth: state => state.authenticated,
     userId: state => state.currentUser.id,
+    getTopics: state => state.topics.sort((a, b) => b.votes - a.votes),
+    singleTopic: state => state.singleTopic,
   },
   mutations: {
     initialiseStore(state) {
@@ -78,8 +83,39 @@ const store = new Vuex.Store({
       state.loginError = false;
       state.loginErrorMessage = '';
     },
+    loadTopic(state) {
+      state.singleTopicLoad = true;
+      state.singleTopicError = false;
+      state.singleTopic = {};
+    },
+    errorTopic(state) {
+      state.singleTopicError = true;
+      state.singleTopicLoad = false;
+    },
+    singleTopic(state, data) {
+      state.singleTopicLoad = false;
+      state.singleTopicError = false;
+      state.singleTopic = data;
+    },
   },
   actions: {
+    socket_votesChanged(context) {
+      return new Promise(resolve =>
+        axios({
+          method: 'get',
+          url: `${apiHost}/api/topics`,
+          headers: {
+            USER_ID: context.getters.userId,
+          },
+        }).then(
+          (response) => {
+            context.commit('updateTopics', response.data);
+            resolve();
+          },
+          error => context.commit('errorTopic', error),
+        ),
+      );
+    },
     register(context, user) {
       return new Promise(resolve =>
         axios.post(`${apiHost}/api/register`, user).then(
@@ -124,6 +160,17 @@ const store = new Vuex.Store({
         ),
       );
     },
+    vote(context, { id }) {
+      return new Promise(() =>
+        axios({
+          method: 'get',
+          url: `${apiHost}/api/topics/${id}/vote`,
+          headers: {
+            USER_ID: context.getters.userId,
+          },
+        }),
+      );
+    },
     addTopic(context, topic) {
       context.commit('savingTopic');
       return new Promise(resolve =>
@@ -140,6 +187,42 @@ const store = new Vuex.Store({
             resolve();
           },
           error => context.commit('errorSaveTopic', error),
+        ),
+      );
+    },
+    getTopic(context, id) {
+      context.commit('loadTopic');
+      return new Promise(resolve =>
+        axios({
+          method: 'get',
+          url: `${apiHost}/api/topics/${id}`,
+          headers: {
+            USER_ID: context.getters.userId,
+          },
+        }).then(
+          (response) => {
+            context.commit('singleTopic', response.data);
+            resolve();
+          },
+          error => context.commit('errorGettingTopic', error),
+        ),
+      );
+    },
+    addComment(context, comment) {
+      return new Promise(resolve =>
+        axios({
+          method: 'post',
+          url: `${apiHost}/api/comments`,
+          data: { ...comment },
+          headers: {
+            USER_ID: context.getters.userId,
+          },
+        }).then(
+          (response) => {
+            context.commit('addedComment', response.data);
+            resolve();
+          },
+          error => context.commit('errorSaveComment', error),
         ),
       );
     },

@@ -79,7 +79,7 @@ export default {
     errorMessage: state => state.loginErrorMessage,
   }),
   created() {
-    this.$store.dispatch('loginReset')
+    this.$store.dispatch('loginReset');
   },
   methods: {
     submit() {
