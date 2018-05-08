@@ -33,7 +33,7 @@
                   <v-list-tile-title>{{ topic.name }}</v-list-tile-title>
                   <v-list-tile-sub-title>{{ topic.description }}</v-list-tile-sub-title>
                 </v-list-tile-content>
-                <v-list-tile-action @click="vote(topic.id)">
+                <v-list-tile-action class="voter" @click="vote(topic.id)">
                   <v-badge
                     left
                     color="red">
@@ -140,7 +140,6 @@ export default {
       v => v.length <= 25 || 'Max 25 characters',
     ],
     selectTopic(topic) {
-      console.log(topic);
       this.showDetails = true;
       this.selectedTopic = topic;
     },
@@ -148,7 +147,6 @@ export default {
 
   computed: {
     ...mapState({
-      topics: state => state.topics,
       loading: state => state.topicLoad,
     }),
     ...mapGetters(['getTopics']),

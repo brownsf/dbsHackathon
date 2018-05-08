@@ -5,6 +5,78 @@ import axios from 'axios';
 
 Vue.use(Vuex);
 const apiHost = 'http://localhost:8080';
+export const mutations = {
+  initialiseStore(state) {
+    // Check if the ID exists
+    if (localStorage.getItem('storeHack')) {
+      // Replace the state object with the stored item
+      this.replaceState(
+        Object.assign(state, {
+          ...JSON.parse(localStorage.getItem('storeHack')),
+          loginError: false,
+        }),
+      );
+    }
+  },
+  SOCKET_NEWTOPIC: (state, message) => {
+    state.topics.push(...message);
+  },
+  updateUser(state, data) {
+    state.currentUser = data;
+    state.authenticated = true;
+  },
+  errorRegister(state, data) {
+    state.authError = data;
+  },
+  updateTopics(state, data) {
+    state.topics = data;
+    state.topicLoad = false;
+    state.topicError = false;
+  },
+  loadTopics(state) {
+    state.topicLoad = true;
+    state.topicError = false;
+  },
+  errorTopics(state) {
+    state.topicError = true;
+    state.topicLoad = false;
+  },
+  savingTopic(state) {
+    state.topicAddError = false;
+    state.topicAddLoad = true;
+  },
+  addedTopic(state) {
+    state.topicAddError = false;
+    state.topicAddLoad = false;
+  },
+  errorSaveTopic(state, message) {
+    state.topicError = true;
+    state.topicLoad = false;
+    state.topicErrorMessage = message;
+  },
+  errorLogin(state, { message }) {
+    state.loginError = true;
+    state.loginErrorMessage = message;
+  },
+  startLogin(state) {
+    state.loginError = false;
+    state.loginErrorMessage = '';
+  },
+  loadTopic(state) {
+    state.singleTopicLoad = true;
+    state.singleTopicError = false;
+    state.singleTopic = {};
+  },
+  errorTopic(state) {
+    state.singleTopicError = true;
+    state.singleTopicLoad = false;
+  },
+  singleTopic(state, data) {
+    state.singleTopicLoad = false;
+    state.singleTopicError = false;
+    state.singleTopic = data;
+  },
+};
 
 const store = new Vuex.Store({
   state: {
@@ -26,78 +98,7 @@ const store = new Vuex.Store({
     getTopics: state => state.topics.sort((a, b) => b.votes - a.votes),
     singleTopic: state => state.singleTopic,
   },
-  mutations: {
-    initialiseStore(state) {
-      // Check if the ID exists
-      if (localStorage.getItem('storeHack')) {
-        // Replace the state object with the stored item
-        this.replaceState(
-          Object.assign(state, {
-            ...JSON.parse(localStorage.getItem('storeHack')),
-            loginError: false,
-          }),
-        );
-      }
-    },
-    SOCKET_NEWTOPIC: (state, message) => {
-      state.topics.push(...message);
-    },
-    updateUser(state, data) {
-      state.currentUser = data;
-      state.authenticated = true;
-    },
-    errorRegister(state, data) {
-      state.authError = data;
-    },
-    updateTopics(state, data) {
-      state.topics = data;
-      state.topicLoad = false;
-      state.topicError = false;
-    },
-    loadTopics(state) {
-      state.topicLoad = true;
-      state.topicError = false;
-    },
-    errorTopics(state) {
-      state.topicError = true;
-      state.topicLoad = false;
-    },
-    savingTopic(state) {
-      state.topicAddError = false;
-      state.topicAddLoad = true;
-    },
-    addedTopic(state) {
-      state.topicAddError = false;
-      state.topicAddLoad = false;
-    },
-    errorSaveTopic(state, message) {
-      state.topicError = true;
-      state.topicLoad = false;
-      state.topicErrorMessage = message;
-    },
-    errorLogin(state, { message }) {
-      state.loginError = true;
-      state.loginErrorMessage = message;
-    },
-    startLogin(state) {
-      state.loginError = false;
-      state.loginErrorMessage = '';
-    },
-    loadTopic(state) {
-      state.singleTopicLoad = true;
-      state.singleTopicError = false;
-      state.singleTopic = {};
-    },
-    errorTopic(state) {
-      state.singleTopicError = true;
-      state.singleTopicLoad = false;
-    },
-    singleTopic(state, data) {
-      state.singleTopicLoad = false;
-      state.singleTopicError = false;
-      state.singleTopic = data;
-    },
-  },
+  mutations,
   actions: {
     socket_votesChanged(context) {
       return new Promise(resolve =>

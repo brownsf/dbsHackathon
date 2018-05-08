@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Comments should redirect 1`] = `undefined`;
+
 exports[`Comments should render 1`] = `
 <div class="layout row">
   <div class="flex sm12 md8 offset-md2">
@@ -16,52 +18,68 @@ exports[`Comments should render 1`] = `
         </div>
       </nav>
       <!---->
-      <div class="list list--subheader list--two-line"></div>
+      <div class="list list--subheader list--two-line">
+        <div class="topicItem">
+          <div>
+            <div class="list__tile">
+              <div class="list__tile__content">
+                <div class="list__tile__title">yep</div>
+                <div class="list__tile__sub-title"></div>
+              </div>
+              <div class="list__tile__action voter"><span class="badge badge--left"> <i aria-hidden="true" class="icon material-icons">thumb_up</i><span class="badge__badge red"><span></span></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="dialog__container" style="display: block;">
     <div class="dialog__content" tabindex="-1" style="z-index: 0;">
       <div class="dialog" style="max-width: 500px; display: none;">
         <div class="card" style="height: auto;">
-          <div class="card__title">
-            Add Topic
-          </div>
-          <div class="card__text">
-            <div class="layout row">
-              <div class="flex xs12 sm8 offset-sm2">
-                <div class="input-group input-group--text-field primary--text">
-                  <label>Name</label>
-                  <div class="input-group__input">
-                    <input tabindex="0" aria-label="Name" type="text">
+          <form novalidate="novalidate">
+            <div class="card__title">
+              Add Topic
+            </div>
+            <div class="card__text">
+              <div class="layout row">
+                <div class="flex xs12 sm8 offset-sm2">
+                  <div class="input-group input-group--text-field primary--text">
+                    <label>Name</label>
+                    <div class="input-group__input">
+                      <input tabindex="0" aria-label="Name" type="text">
+                    </div>
+                    <div class="input-group__details">
+                      <!---->
+                    </div>
                   </div>
-                  <div class="input-group__details">
-                    <!---->
+                </div>
+              </div>
+              <div class="layout row">
+                <div class="flex xs12 sm8 offset-sm2">
+                  <div class="input-group input-group--text-field primary--text">
+                    <label>Description</label>
+                    <div class="input-group__input">
+                      <input tabindex="0" aria-label="Description" type="text">
+                    </div>
+                    <div class="input-group__details">
+                      <!---->
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="layout row">
-              <div class="flex xs12 sm8 offset-sm2">
-                <div class="input-group input-group--text-field primary--text">
-                  <label>Description</label>
-                  <div class="input-group__input">
-                    <input tabindex="0" aria-label="Description" type="text">
-                  </div>
-                  <div class="input-group__details">
-                    <!---->
-                  </div>
-                </div>
-              </div>
+            <div class="card__actions">
+              <button type="button" class="saveTopic btn btn--flat primary--text">
+                <div class="btn__content">Save</div>
+              </button>
+              <button type="button" class="btn btn--flat secondary--text">
+                <div class="btn__content">Cancel</div>
+              </button>
             </div>
-          </div>
-          <div class="card__actions">
-            <button type="button" class="btn btn--flat primary--text">
-              <div class="btn__content">Save</div>
-            </button>
-            <button type="button" class="btn btn--flat secondary--text">
-              <div class="btn__content">Cancel</div>
-            </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

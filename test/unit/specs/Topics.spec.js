@@ -18,9 +18,11 @@ describe('Comments', () => {
     getTopic: jest.fn(),
     addComment: jest.fn(),
     addTopic: jest.fn(),
+    vote: jest.fn(),
   };
   const getters = {
     isAuth: () => true,
+    getTopics: () => [{ id: 1, name: 'yep' }],
     singleTopic: () => ({
       comments: [
         {
@@ -41,6 +43,7 @@ describe('Comments', () => {
     // expect(wrp.html()).toMatchSnapshot();
 
     expect(wrapper.html()).toMatchSnapshot();
+    expect(actions.getAllTopics.mock.calls).toHaveLength(1);
   });
 
   it('should save comment', () => {
@@ -52,5 +55,20 @@ describe('Comments', () => {
   it('should render state corrently', () => {
     expect(wrapper.findAll('.loader')).toHaveLength(0);
     expect(wrapper.findAll('.errorAlert')).toHaveLength(0);
+  });
+
+  it('should vote', () => {
+    wrapper.find('.voter').trigger('click');
+    expect(actions.vote.mock.calls).toHaveLength(1);
+  });
+
+  it('should redirect', () => {
+    const store2 = new Vuex.Store({
+      state,
+      actions,
+      getters: { ...getters, isAuth: () => false },
+    });
+    const wrp = mount(Topics, { store: store2, router });
+    expect(wrp.vm.router).toMatchSnapshot();
   });
 });
