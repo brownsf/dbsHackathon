@@ -51,6 +51,7 @@
       v-model="addDialog"
       max-width="500px">
       <v-card>
+        <v-form ref="form">
         <v-card-title>
           Add Topic
         </v-card-title>
@@ -85,6 +86,7 @@
         <v-card-actions>
           <v-btn
             color="primary"
+            class="saveTopic"
             flat
             @click="saveTopic">Save</v-btn>
 
@@ -93,6 +95,7 @@
             flat
             @click.stop="addDialog=false">Cancel</v-btn>
         </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <v-dialog

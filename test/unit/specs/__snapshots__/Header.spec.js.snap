@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login should render 1`] = `
+<nav class="toolbar" style="margin-top: 0px; padding-right: 0px; padding-left: 0px;">
+  <div class="toolbar__content" style="height: 56px;">
+    <div class="toolbar__title">Tech-Board</div>
+    <div class="spacer"></div>
+    <div class="toolbar__items hidden-sm-and-down">
+      <a href="#/topics" class="link btn btn--flat btn--router">
+        <div class="btn__content">Topics</div>
+      </a>
+      <button type="button" class="link btn btn--flat">
+        <div class="btn__content">Logout</div>
+      </button>
+    </div>
+  </div>
+</nav>
+`;

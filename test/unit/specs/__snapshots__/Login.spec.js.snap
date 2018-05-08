@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login should render 1`] = `
+<div class="layout row wrap">
+  <div class="flex xs12 md4 justify-center">
+    <form novalidate="novalidate">
+      <div class="input-group input-group--required input-group--text-field primary--text">
+        <label>E-mail</label>
+        <div class="input-group__input">
+          <input required="required" tabindex="0" aria-label="E-mail" type="text">
+        </div>
+        <div class="input-group__details">
+          <!---->
+        </div>
+      </div>
+      <div class="input-group input-group--append-icon input-group--required input-group--text-field primary--text">
+        <label>Enter your password</label>
+        <div class="input-group__input">
+          <input name="input-10-1" min="8" required="required" tabindex="0" aria-label="Enter your password" type="text">
+          <i aria-hidden="true" class="icon material-icons input-group__append-icon input-group__icon-cb">visibility_off</i>
+        </div>
+        <div class="input-group__details">
+          <!---->
+          <div class="input-group__counter">0 / 25</div>
+        </div>
+      </div>
+      <div class="alert error" style="display: none;">
+        <i aria-hidden="true" class="icon material-icons alert__icon">warning</i>
+        <div>
+
+        </div>
+      </div>
+      <button type="button" class="sbButton btn">
+        <div class="btn__content">submit</div>
+      </button>
+      <button type="button" class="btn">
+        <div class="btn__content">clear</div>
+      </button>
+      <p class="newAccount">
+        <a href="#/register" class="">Create new account</a>
+      </p>
+    </form>
+  </div>
+</div>
+`;

@@ -4,47 +4,44 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
 import Login from '@/components/Login';
+import router from '@/router';
 
 Vue.use(Vuex);
-describe('Register', () => {
-  let wrp;
-
-  const routes = [{ path: '/items/:item_id/edit', name: 'item-edit' }];
+Vue.use(Vuetify);
+Vue.use(VueRouter);
+describe('Login', () => {
   const state = { data: {} };
   const actions = {
     register: jest.fn(),
+    getAllTopics: jest.fn(),
+    login: jest.fn(),
+  };
+  const routes = [{ path: '/items/:item_id/edit', name: 'item-edit' }];
+  const getters = {
+    isAuth: () => true,
   };
 
   const store = new Vuex.Store({
     state,
     actions,
-  });
-  const router = new VueRouter({ routes });
-
-  beforeEach(() => {
-    const localVue = createLocalVue();
-    localVue.use(VueRouter);
-    localVue.use(Vuetify);
-
-    wrp = mount(Login, {
-      localVue,
-      router,
-    });
+    getters,
   });
 
   it('should render', () => {
-    expect(wrp.html()).toMatchSnapshot();
+    // expect(wrp.html()).toMatchSnapshot();
+    const wrapper = mount(Login, { store, router });
+    expect(wrapper.html()).toMatchSnapshot();
   });
   it('should have a text input', () => {
     const Constructor = Vue.extend(Login);
-    const vm = new Constructor().$mount();
+    const vm = new Constructor({ router, store }).$mount();
     expect(vm.$el.querySelector('.sbButton').textContent).toEqual('submit');
   });
 
   it('clicks the button', () => {
-    const wrapper = mount(Login, { store });
+    const wrapper = mount(Login, { store, router });
     wrapper.vm.$refs.form.validate = () => true;
     wrapper.find('.sbButton').trigger('click');
-    expect(actions.register.mock.calls).toHaveLength(1);
+    expect(actions.login.mock.calls).toHaveLength(1);
   });
 });

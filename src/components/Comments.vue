@@ -11,7 +11,7 @@
           @click="$emit('close')">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title>Comments for {{ topic.name }}</v-toolbar-title>
+        <v-toolbar-title>Comments for {{ singleTopic.name }}</v-toolbar-title>
         <v-spacer/>
         <v-toolbar-items>
           <v-btn
@@ -29,6 +29,8 @@
           <v-flex xs12>
             <v-list subheader>
               <v-subheader>Recent comments:</v-subheader>
+              <v-progress-linear v-if="loading" class="loader" />
+              <v-alert class="errorAlert" v-if="error">Error loading topic details</v-alert>
               <template v-for="(item, index) in singleTopic.comments">
                 <v-list-tile
 
@@ -70,6 +72,7 @@
             <v-card-actions>
               <v-btn
                 color="primary"
+                class="saveComment"
                 flat
                 @click="saveComment">Add</v-btn>
 
@@ -122,7 +125,6 @@ export default {
   },
   computed: {
     ...mapState({
-      topic: state => state.singleTopic,
       loading: state => state.singleTopicLoad,
       error: state => state.singleTopicError,
     }),
@@ -132,7 +134,6 @@ export default {
     selected: {
       handler(newVal, oldVal) {
         // watch it
-        console.log({ newVal, oldVal });
         this.getTopic(newVal);
       },
     },

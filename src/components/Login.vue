@@ -40,6 +40,7 @@
         <v-btn
           :disabled="!valid"
           @click="submit"
+          class="sbButton"
         >submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
         <p class="newAccount"><router-link to="register">Create new account</router-link></p>

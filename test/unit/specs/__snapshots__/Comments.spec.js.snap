@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comments should render 1`] = `
+<div class="commentContainer">
+  <div class="card card--tile" style="height: auto;">
+    <nav class="toolbar toolbar--card theme--dark primary" style="margin-top: 0px; padding-right: 0px; padding-left: 0px;">
+      <div class="toolbar__content" style="height: 56px;">
+        <button type="button" class="btn btn--icon theme--dark">
+          <div class="btn__content">
+            <i aria-hidden="true" class="icon material-icons">close</i>
+          </div>
+        </button>
+        <div class="toolbar__title">Comments for </div>
+        <div class="spacer"></div>
+        <div class="toolbar__items">
+          <button type="button" class="btn btn--flat theme--dark">
+            <div class="btn__content">add</div>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="container grid-list-md text-xs-center">
+      <div class="layout row wrap">
+        <div class="flex xs12">
+          <div class="list list--subheader">
+            <div class="subheader">Recent comments:</div>
+            <!---->
+            <!---->
+            <div>
+              <div class="list__tile">
+                <div class="list__tile__content">
+                  <div class="list__tile__title">one</div>
+                </div>
+              </div>
+            </div>
+            <hr class="divider">
+            <div>
+              <div class="list__tile">
+                <div class="list__tile__content">
+                  <div class="list__tile__title">two</div>
+                </div>
+              </div>
+            </div>
+            <hr class="divider">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dialog__container" style="display: block;">
+      <div class="dialog__content" tabindex="-1" style="z-index: 0;">
+        <div class="dialog" style="max-width: 500px; display: none;">
+          <div class="card" style="height: auto;">
+            <div class="card__title">
+              Add Comment
+            </div>
+            <form novalidate="novalidate">
+              <div class="card__text">
+                <div class="layout row">
+                  <div class="flex xs12 sm8 offset-sm2">
+                    <div class="input-group input-group--text-field input-group--multi-line primary--text">
+                      <label>Comment</label>
+                      <div class="input-group__input">
+                        <textarea tabindex="0" aria-label="Comment" rows="5"></textarea>
+                      </div>
+                      <div class="input-group__details">
+                        <!---->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card__actions">
+                <button type="button" class="saveComment btn btn--flat primary--text">
+                  <div class="btn__content">Add</div>
+                </button>
+                <button type="button" class="btn btn--flat secondary--text">
+                  <div class="btn__content">Cancel</div>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
