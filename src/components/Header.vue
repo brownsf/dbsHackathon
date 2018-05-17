@@ -7,16 +7,17 @@
         class="link"
         flat
         to="topics">Topics</v-btn>
-        <v-btn
+      <v-btn
+        v-if="loggedIn"
         class="link"
-         v-if="loggedIn"
+        @click="logout"
         flat>Logout</v-btn>
       <v-btn
         v-else
         flat
         class="link"
         to="login">Login</v-btn>
-      
+
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -26,6 +27,11 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.getters.isAuth;
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout").then(() => this.$router.push("/login"));
     }
   }
 };

@@ -29,8 +29,12 @@
           <v-flex xs12>
             <v-list subheader>
               <v-subheader>Recent comments:</v-subheader>
-              <v-progress-linear v-if="loading" class="loader" />
-              <v-alert class="errorAlert" v-if="error">Error loading topic details</v-alert>
+              <v-progress-linear
+                v-if="loading"
+                class="loader" />
+              <v-alert
+                v-if="error"
+                class="errorAlert">Error loading topic details</v-alert>
               <template v-for="(item, index) in singleTopic.comments">
                 <v-list-tile
 
@@ -108,6 +112,21 @@ export default {
     dialog: false,
     comment: '',
   }),
+  computed: {
+    ...mapState({
+      loading: state => state.singleTopicLoad,
+      error: state => state.singleTopicError,
+    }),
+    ...mapGetters(['singleTopic']),
+  },
+  watch: {
+    selected: {
+      handler(newVal) {
+        // watch it
+        this.getTopic(newVal);
+      },
+    },
+  },
   methods: {
     getTopic(id) {
       if (id) {
@@ -119,23 +138,10 @@ export default {
         this.$store.dispatch('addComment', {
           topic_id: this.singleTopic.id,
           message: this.comment,
+        }).then(() => {
+          this.dialog = false;
         });
       }
-    },
-  },
-  computed: {
-    ...mapState({
-      loading: state => state.singleTopicLoad,
-      error: state => state.singleTopicError,
-    }),
-    ...mapGetters(['singleTopic']),
-  },
-  watch: {
-    selected: {
-      handler(newVal, oldVal) {
-        // watch it
-        this.getTopic(newVal);
-      },
     },
   },
 };

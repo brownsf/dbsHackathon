@@ -22,7 +22,7 @@
           v-model="password"
           :append-icon="e1 ? 'visibility' : 'visibility_off'"
           :append-icon-cb="() => (e1 = !e1)"
-          :type="e1 ? 'password' : 'text'"
+          :type="e1 ?  'text': 'password'"
           :rules="passwordRules"
           name="input-10-1"
           label="Enter your password"
@@ -39,8 +39,8 @@
 
         <v-btn
           :disabled="!valid"
-          @click="submit"
           class="sbButton"
+          @click="submit"
         >submit</v-btn>
         <v-btn @click="clear">clear</v-btn>
         <p class="newAccount"><router-link to="register">Create new account</router-link></p>

@@ -14,12 +14,13 @@ export const mutations = {
         Object.assign(state, {
           ...JSON.parse(localStorage.getItem('storeHack')),
           loginError: false,
+          authError: false,
         }),
       );
     }
   },
-  SOCKET_NEWTOPIC: (state, message) => {
-    state.topics.push(...message);
+  addTopic(state, data) {
+    state.topics.push(data);
   },
   updateUser(state, data) {
     state.currentUser = data;
@@ -34,8 +35,8 @@ export const mutations = {
     state.topicError = false;
   },
   loadTopics(state) {
-    state.topicLoad = true;
-    state.topicError = false;
+    Vue.set(state, 'topicLoad', true);
+    Vue.set(state, 'topicError', false);
   },
   errorTopics(state) {
     state.topicError = true;
@@ -76,161 +77,186 @@ export const mutations = {
     state.singleTopicError = false;
     state.singleTopic = data;
   },
+  logout(state) {
+    state.currentUser = {};
+  },
 };
 
-const store = new Vuex.Store({
-  state: {
-    authenticated: false,
-    authError: false,
-    topics: [],
-    currentUser: {},
-    error: false,
-    topicLoad: false,
-    loginError: false,
-    loginErrorMessage: '',
-    singleTopic: {},
-    singleTopicError: {},
-    singleTopicLoad: {},
+export const getters = {
+  isAuth: state => !!state.currentUser.id,
+  userId: state => state.currentUser.id,
+  getTopics: state => state.topics.sort((a, b) => b.votes - a.votes),
+  singleTopic: state => state.singleTopic,
+};
+export const state = {
+  authenticated: false,
+  authError: false,
+  topics: [],
+  currentUser: {},
+  error: false,
+  topicLoad: false,
+  loginError: false,
+  loginErrorMessage: '',
+  singleTopic: {},
+  singleTopicError: {},
+  singleTopicLoad: {},
+  registerError: {},
+};
+
+export const actions = {
+  socket_newTopic(context, topic) {
+    context.commit('addTopic', topic);
   },
-  getters: {
-    isAuth: state => state.authenticated,
-    userId: state => state.currentUser.id,
-    getTopics: state => state.topics.sort((a, b) => b.votes - a.votes),
-    singleTopic: state => state.singleTopic,
+  socket_votesChanged(context) {
+    return new Promise(resolve =>
+      axios({
+        method: 'get',
+        url: `${apiHost}/api/topics`,
+        headers: {
+          USER_ID: context.getters.userId,
+        },
+      }).then(
+        (response) => {
+          context.commit('updateTopics', response.data);
+          resolve();
+        },
+        error => context.commit('errorTopic', error),
+      ),
+    );
   },
-  mutations,
-  actions: {
-    socket_votesChanged(context) {
-      return new Promise(resolve =>
-        axios({
-          method: 'get',
-          url: `${apiHost}/api/topics`,
-          headers: {
-            USER_ID: context.getters.userId,
-          },
-        }).then(
-          (response) => {
-            context.commit('updateTopics', response.data);
-            resolve();
-          },
-          error => context.commit('errorTopic', error),
-        ),
-      );
-    },
-    register(context, user) {
-      return new Promise(resolve =>
-        axios.post(`${apiHost}/api/register`, user).then(
-          (response) => {
-            context.commit('updateUser', response.data);
-            resolve();
-          },
-          error => context.commit('errorRegister', error),
-        ),
-      );
-    },
-    login(context, user) {
-      return new Promise((resolve) => {
-        context.commit('startLogin');
-        return axios.post(`${apiHost}/api/login`, user).then(
-          (response) => {
-            context.commit('updateUser', response.data);
-            resolve();
-          },
-          error => context.commit('errorLogin', error.response.data),
-        );
-      });
-    },
-    loginReset(context) {
+  register(context, user) {
+    return new Promise(resolve =>
+      axios({ url: `${apiHost}/api/register`, method: 'post', data: { ...user } }).then(
+        (response) => {
+          context.commit('updateUser', response.data);
+          resolve();
+        },
+        error => context.commit('errorRegister', error.response.data),
+      ),
+    );
+  },
+  login(context, user) {
+    return new Promise((resolve) => {
       context.commit('startLogin');
-    },
-    getAllTopics(context) {
-      context.commit('loadTopics');
-      return new Promise(resolve =>
-        axios({
-          method: 'get',
-          url: `${apiHost}/api/topics`,
-          headers: {
-            USER_ID: context.getters.userId,
-          },
-        }).then(
-          (response) => {
-            context.commit('updateTopics', response.data);
-            resolve();
-          },
-          error => context.commit('errorTopic', error),
-        ),
+      return axios({ url: `${apiHost}/api/login`, method: 'post', data: { ...user } }).then(
+        (response) => {
+          context.commit('updateUser', response.data);
+          resolve();
+        },
+        error => context.commit('errorLogin', error.response.data),
       );
-    },
-    vote(context, { id }) {
-      return new Promise(() =>
-        axios({
-          method: 'get',
-          url: `${apiHost}/api/topics/${id}/vote`,
-          headers: {
-            USER_ID: context.getters.userId,
-          },
-        }),
-      );
-    },
-    addTopic(context, topic) {
-      context.commit('savingTopic');
-      return new Promise(resolve =>
-        axios({
-          method: 'post',
-          url: `${apiHost}/api/topics`,
-          data: { ...topic },
-          headers: {
-            USER_ID: context.getters.userId,
-          },
-        }).then(
-          (response) => {
-            context.commit('addedTopic', response.data);
-            resolve();
-          },
-          error => context.commit('errorSaveTopic', error),
-        ),
-      );
-    },
-    getTopic(context, id) {
-      context.commit('loadTopic');
-      return new Promise(resolve =>
-        axios({
-          method: 'get',
-          url: `${apiHost}/api/topics/${id}`,
-          headers: {
-            USER_ID: context.getters.userId,
-          },
-        }).then(
-          (response) => {
-            context.commit('singleTopic', response.data);
-            resolve();
-          },
-          error => context.commit('errorGettingTopic', error),
-        ),
-      );
-    },
-    addComment(context, comment) {
-      return new Promise(resolve =>
-        axios({
-          method: 'post',
-          url: `${apiHost}/api/comments`,
-          data: { ...comment },
-          headers: {
-            USER_ID: context.getters.userId,
-          },
-        }).then(
-          (response) => {
-            context.commit('addedComment', response.data);
-            resolve();
-          },
-          error => context.commit('errorSaveComment', error),
-        ),
-      );
-    },
+    });
   },
+  loginReset(context) {
+    context.commit('startLogin');
+  },
+  getAllTopics(context) {
+    context.commit('loadTopics');
+    return new Promise(resolve =>
+      axios({
+        method: 'get',
+        url: `${apiHost}/api/topics`,
+        headers: {
+          USER_ID: context.getters.userId,
+        },
+      }).then(
+        (response) => {
+          context.commit('updateTopics', response.data);
+          resolve();
+        },
+        (error) => {
+          context.commit('errorTopic', error);
+          resolve();
+        },
+      ),
+    );
+  },
+  vote(context, { id }) {
+    return new Promise(() =>
+      axios({
+        method: 'get',
+        url: `${apiHost}/api/topics/${id}/vote`,
+        headers: {
+          USER_ID: context.getters.userId,
+        },
+      }),
+    );
+  },
+  addTopic(context, topic) {
+    context.commit('savingTopic');
+    return new Promise(resolve =>
+      axios({
+        method: 'post',
+        url: `${apiHost}/api/topics`,
+        data: { ...topic },
+        headers: {
+          USER_ID: context.getters.userId,
+        },
+      }).then(
+        (response) => {
+          context.commit('addedTopic', response.data);
+          resolve();
+        },
+        (error) => {
+          context.commit('errorSaveTopic', error);
+          resolve();
+        },
+      ),
+    );
+  },
+  getTopic(context, id) {
+    context.commit('loadTopic');
+    return new Promise(resolve =>
+      axios({
+        method: 'get',
+        url: `${apiHost}/api/topics/${id}`,
+        headers: {
+          USER_ID: context.getters.userId,
+        },
+      }).then(
+        (response) => {
+          context.commit('singleTopic', response.data);
+          resolve();
+        },
+        (error) => {
+          context.commit('errorGettingTopic', error);
+          resolve();
+        },
+      ),
+    );
+  },
+  addComment(context, comment) {
+    return new Promise(resolve =>
+      axios({
+        method: 'post',
+        url: `${apiHost}/api/comments`,
+        data: { ...comment },
+        headers: {
+          USER_ID: context.getters.userId,
+        },
+      })
+        .then((response) => {
+          context.dispatch('getTopic', response.data.topic_id);
+          resolve();
+        })
+        .catch((error) => {
+          context.commit('errorSaveComment', error);
+          resolve();
+        }),
+    );
+  },
+  logout(context) {
+    context.commit('logout');
+  },
+};
+const store = new Vuex.Store({
+  actions,
+  getters,
+  mutations,
+  state,
 });
-store.subscribe((mutation, state) => {
+store.subscribe((mutation, stte) => {
   // Store the state object as a JSON string
-  localStorage.setItem('storeHack', JSON.stringify(state));
+  localStorage.setItem('storeHack', JSON.stringify(stte));
 });
 export default store;

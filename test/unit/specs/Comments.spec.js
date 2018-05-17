@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 import Vuex from 'vuex';

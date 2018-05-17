@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -16,7 +16,6 @@ describe('Login', () => {
     getAllTopics: jest.fn(),
     login: jest.fn(),
   };
-  const routes = [{ path: '/items/:item_id/edit', name: 'item-edit' }];
   const getters = {
     isAuth: () => true,
   };
