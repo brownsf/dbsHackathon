@@ -15,6 +15,7 @@ describe('store', () => {
       error: false,
       loginError: false,
       loginErrorMessage: '',
+      registerError: {},
       singleTopic: {},
       singleTopicError: {},
       singleTopicLoad: {},
@@ -37,6 +38,7 @@ describe('store', () => {
       error: false,
       loginError: false,
       loginErrorMessage: '',
+      registerError: {},
       singleTopic: {},
       singleTopicError: {},
       singleTopicLoad: {},
@@ -55,6 +57,7 @@ describe('store', () => {
       error: false,
       loginError: false,
       loginErrorMessage: '',
+      registerError: {},
       singleTopic: {},
       singleTopicError: {},
       singleTopicLoad: {},
@@ -73,6 +76,7 @@ describe('store', () => {
       error: false,
       loginError: false,
       loginErrorMessage: '',
+      registerError: {},
       singleTopic: {},
       singleTopicError: {},
       singleTopicLoad: {},
@@ -91,6 +95,7 @@ describe('store', () => {
       error: false,
       loginError: false,
       loginErrorMessage: '',
+      registerError: {},
       singleTopic: undefined,
       singleTopicError: false,
       singleTopicLoad: false,
@@ -101,7 +106,7 @@ describe('store', () => {
   });
 
   test('isAuth', () => {
-    expect(getters.isAuth({ authenticated: true })).toEqual(true);
+    expect(getters.isAuth({ currentUser: { id: 1 } })).toEqual(true);
   });
 
   test('userId', () => {
@@ -121,8 +126,8 @@ describe('store', () => {
 
   test('addComment', async () => {
     const commit = jest.fn();
-    await actions.addComment({ commit, getters: { userId: 1 } });
-    expect(commit).toBeCalled();
+    const action = await actions.addComment({ commit, getters: { userId: 1 }, dispatch: a => a });
+    expect(action).toEqual();
   });
   test('socket_votesChanged', async () => {
     const commit = jest.fn();
@@ -168,8 +173,11 @@ describe('store', () => {
 
   test('addComment', async () => {
     const commit = jest.fn();
-    await actions.addComment({ commit, getters: { userId: 1 } }, { id: 1 });
-    expect(commit).toBeCalledWith('addedComment', true);
+    const action = await actions.addComment(
+      { commit, dispatch: a => a, getters: { userId: 1 } },
+      { id: 1 },
+    );
+    expect(action).toEqual();
   });
 
   test('getAllTopics error', async () => {

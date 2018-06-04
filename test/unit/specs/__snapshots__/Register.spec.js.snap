@@ -36,12 +36,18 @@ exports[`Register should render 1`] = `
       <div class="input-group input-group--append-icon input-group--text-field primary--text">
         <label>Enter your password</label>
         <div class="input-group__input">
-          <input name="input-10-1" min="8" tabindex="0" aria-label="Enter your password" type="text">
+          <input name="input-10-1" min="8" tabindex="0" aria-label="Enter your password" type="password">
           <i aria-hidden="true" class="icon material-icons input-group__append-icon input-group__icon-cb">visibility_off</i>
         </div>
         <div class="input-group__details">
           <!---->
           <div class="input-group__counter">0 / 25</div>
+        </div>
+      </div>
+      <div class="alert error" style="display: none;">
+        <i aria-hidden="true" class="icon material-icons alert__icon">warning</i>
+        <div>
+          <p>Registration Error</p>
         </div>
       </div>
       <button type="button" class="sbButton btn">

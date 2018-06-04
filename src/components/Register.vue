@@ -37,7 +37,7 @@
           :rules="passwordRules"
           :append-icon="e1 ? 'visibility' : 'visibility_off'"
           :append-icon-cb="() => (e1 = !e1)"
-          :type="e1 ?  'text': 'password'"
+          :type="e1 ? 'text': 'password'"
           name="input-10-1"
           label="Enter your password"
           hint="At least 8 characters"
@@ -47,8 +47,8 @@
         <v-alert
           :value="error"
           type="error">
-         <p v-if="error.constraint">Already Registerd</p>
-         <p v-else>Registration Error</p>
+          <p v-if="error.constraint">Already Registerd</p>
+          <p v-else>Registration Error</p>
         </v-alert>
         <v-btn
           :disabled="!valid"
@@ -63,6 +63,7 @@
 
 <script>
 import { mapState } from 'vuex';
+
 export default {
   data: () => ({
     e1: false,
@@ -90,8 +91,8 @@ export default {
   }),
   computed:
    mapState({
-    error: state => state.authError || false,
-  }),
+     error: state => state.authError || false,
+   }),
   methods: {
     submit() {
       if (this.$refs.form.validate()) {

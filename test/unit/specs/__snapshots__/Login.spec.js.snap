@@ -16,7 +16,7 @@ exports[`Login should render 1`] = `
       <div class="input-group input-group--append-icon input-group--required input-group--text-field primary--text">
         <label>Enter your password</label>
         <div class="input-group__input">
-          <input name="input-10-1" min="8" required="required" tabindex="0" aria-label="Enter your password" type="text">
+          <input name="input-10-1" min="8" required="required" tabindex="0" aria-label="Enter your password" type="password">
           <i aria-hidden="true" class="icon material-icons input-group__append-icon input-group__icon-cb">visibility_off</i>
         </div>
         <div class="input-group__details">

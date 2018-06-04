@@ -22,7 +22,7 @@
           v-model="password"
           :append-icon="e1 ? 'visibility' : 'visibility_off'"
           :append-icon-cb="() => (e1 = !e1)"
-          :type="e1 ?  'text': 'password'"
+          :type="e1 ? 'text': 'password'"
           :rules="passwordRules"
           name="input-10-1"
           label="Enter your password"

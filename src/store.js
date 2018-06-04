@@ -20,7 +20,7 @@ export const mutations = {
     }
   },
   addTopic(state, data) {
-    state.topics.push(data);
+    state.topics = state.topics.concat(data);
   },
   updateUser(state, data) {
     state.currentUser = data;
@@ -83,7 +83,7 @@ export const mutations = {
 };
 
 export const getters = {
-  isAuth: state => !!state.currentUser.id,
+  isAuth: state => !!(state.currentUser || {}).id,
   userId: state => state.currentUser.id,
   getTopics: state => state.topics.sort((a, b) => b.votes - a.votes),
   singleTopic: state => state.singleTopic,
@@ -131,7 +131,7 @@ export const actions = {
           context.commit('updateUser', response.data);
           resolve();
         },
-        error => context.commit('errorRegister', error.response.data),
+        error => context.commit('errorRegister', error),
       ),
     );
   },
@@ -143,7 +143,7 @@ export const actions = {
           context.commit('updateUser', response.data);
           resolve();
         },
-        error => context.commit('errorLogin', error.response.data),
+        error => context.commit('errorLogin', error),
       );
     });
   },
@@ -151,13 +151,24 @@ export const actions = {
     context.commit('startLogin');
   },
   getAllTopics(context) {
+    const instance = axios.create({
+      headers: {
+        common: {
+          // can be common or any other method
+          USER_ID: context.getters.userId,
+          test: 'abc',
+        },
+      },
+    });
+    axios.defaults.headers.common.USER_ID = context.getters.userId;
     context.commit('loadTopics');
     return new Promise(resolve =>
-      axios({
+      instance({
         method: 'get',
         url: `${apiHost}/api/topics`,
         headers: {
           USER_ID: context.getters.userId,
+          test: 'this is test',
         },
       }).then(
         (response) => {

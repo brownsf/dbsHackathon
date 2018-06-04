@@ -162,15 +162,18 @@ export default {
   },
   methods: {
     saveTopic() {
+      const { name, description } = this;
       this.$store
         .dispatch('addTopic', {
-          name: this.name,
-          description: this.description,
+          name,
+          description,
         })
         .then(() => {
           this.addDialog = false;
           this.$store.dispatch('getAllTopics');
         });
+      this.name = '';
+      this.description = '';
     },
     vote(id) {
       this.$store.dispatch('vote', { id }).then(() => {});

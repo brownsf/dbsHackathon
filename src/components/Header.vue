@@ -1,6 +1,11 @@
 <template>
   <v-toolbar>
-    <v-toolbar-title>Tech-Board</v-toolbar-title>
+    <v-toolbar-title>
+      <v-btn
+        flat
+        class="linkyarn"
+        to="/">Tech-Board</v-btn>
+    </v-toolbar-title>
     <v-spacer/>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn
@@ -10,8 +15,9 @@
       <v-btn
         v-if="loggedIn"
         class="link"
-        @click="logout"
-        flat>Logout</v-btn>
+        id="logoutBtn"
+        flat
+        @click="logout">Logout</v-btn>
       <v-btn
         v-else
         flat
@@ -27,13 +33,13 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.getters.isAuth;
-    }
+    },
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout").then(() => this.$router.push("/login"));
-    }
-  }
+      this.$store.dispatch('logout').then(() => this.$router.push('/login'));
+    },
+  },
 };
 </script>
 

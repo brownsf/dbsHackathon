@@ -3,7 +3,7 @@
 exports[`Comments should render 1`] = `
 <div class="commentContainer">
   <div class="card card--tile" style="height: auto;">
-    <nav class="toolbar toolbar--card theme--dark primary" style="margin-top: 0px; padding-right: 0px; padding-left: 0px;">
+    <nav class="toolbar toolbar--card theme--dark teal" style="margin-top: 0px; padding-right: 0px; padding-left: 0px;">
       <div class="toolbar__content" style="height: 56px;">
         <button type="button" class="btn btn--icon theme--dark">
           <div class="btn__content">

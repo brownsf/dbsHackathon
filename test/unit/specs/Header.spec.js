@@ -15,6 +15,7 @@ describe('Login', () => {
     register: jest.fn(),
     getAllTopics: jest.fn(),
     login: jest.fn(),
+    logout: jest.fn(),
   };
   const getters = {
     isAuth: () => true,
@@ -35,5 +36,21 @@ describe('Login', () => {
     const wrapper = mount(Header, { store, router });
     const btns = wrapper.findAll('.link');
     expect(btns.length).toBe(2);
+  });
+
+  it('should logout', () => {
+    const store2 = new Vuex.Store({
+      state,
+      actions,
+      getters: {
+        isAuth: () => false,
+      },
+    });
+
+    const wrapper = mount(Header, { store: store2, router });
+    const btn = wrapper.findAll('.link');
+
+    btn.at(1).trigger('click');
+    expect(actions.logout).toBeCalledWith();
   });
 });

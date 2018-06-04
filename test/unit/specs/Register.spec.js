@@ -27,6 +27,7 @@ describe('Register', () => {
     localVue.use(Vuetify);
 
     wrp = mount(Register, {
+      store,
       localVue,
       router,
     });
@@ -36,9 +37,12 @@ describe('Register', () => {
     expect(wrp.html()).toMatchSnapshot();
   });
   it('should have a text input', () => {
-    const Constructor = Vue.extend(Register);
-    const vm = new Constructor().$mount();
-    expect(vm.$el.querySelector('.sbButton').textContent).toEqual('submit');
+    expect(
+      wrp
+        .find('.sbButton')
+        .find('.btn__content')
+        .html(),
+    ).toEqual('<div class="btn__content">submit</div>');
   });
 
   it('clicks the button', () => {
