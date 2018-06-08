@@ -29,6 +29,23 @@ describe('store', () => {
     expect(state.authError).toEqual('message');
   });
 
+  test('addTopic', () => {
+    mutations.addTopic(state, 'message');
+    expect(state).toEqual({
+      authError: 'message',
+      authenticated: true,
+      currentUser: { name: 'test' },
+      error: false,
+      loginError: false,
+      loginErrorMessage: '',
+      registerError: {},
+      singleTopic: {},
+      singleTopicError: {},
+      singleTopicLoad: {},
+      topicLoad: false,
+      topics: ['message'],
+    });
+  });
   it('updateTopics', () => {
     mutations.updateTopics(state, { id: 1 });
     expect(state).toEqual({
@@ -105,8 +122,89 @@ describe('store', () => {
     });
   });
 
+  test('loadTopic', () => {
+    mutations.loadTopic(state);
+    expect(state).toEqual({
+      authError: 'message',
+      authenticated: true,
+      currentUser: { name: 'test' },
+      error: false,
+      loginError: false,
+      loginErrorMessage: '',
+      registerError: {},
+      singleTopic: {},
+      singleTopicError: false,
+      singleTopicLoad: true,
+      topicError: true,
+      topicLoad: false,
+      topics: { id: 1 },
+    });
+  });
+  test('addedTopic', () => {
+    mutations.addedTopic(state);
+    expect(state).toEqual({
+      authError: 'message',
+      authenticated: true,
+      currentUser: { name: 'test' },
+      error: false,
+      loginError: false,
+      loginErrorMessage: '',
+      registerError: {},
+      singleTopic: {},
+      singleTopicError: false,
+      singleTopicLoad: true,
+      topicAddError: false,
+      topicAddLoad: false,
+      topicError: true,
+      topicLoad: false,
+      topics: { id: 1 },
+    });
+  });
+  test('savingTopic', () => {
+    mutations.savingTopic(state);
+    expect(state).toEqual({
+      authError: 'message',
+      authenticated: true,
+      currentUser: { name: 'test' },
+      error: false,
+      loginError: false,
+      loginErrorMessage: '',
+      registerError: {},
+      singleTopic: {},
+      singleTopicError: false,
+      singleTopicLoad: true,
+      topicAddError: false,
+      topicAddLoad: true,
+      topicError: true,
+      topicLoad: false,
+      topics: { id: 1 },
+    });
+  });
+
+  test('errorSaveTopic', () => {
+    mutations.errorSaveTopic(state, 'ERROR');
+    expect(state).toEqual({
+      authError: 'message',
+      authenticated: true,
+      currentUser: { name: 'test' },
+      error: false,
+      loginError: false,
+      loginErrorMessage: '',
+      registerError: {},
+      singleTopic: {},
+      singleTopicError: false,
+      singleTopicLoad: true,
+      topicAddError: false,
+      topicAddLoad: true,
+      topicError: true,
+      topicErrorMessage: 'ERROR',
+      topicLoad: false,
+      topics: { id: 1 },
+    });
+  });
   test('isAuth', () => {
     expect(getters.isAuth({ currentUser: { id: 1 } })).toEqual(true);
+    expect(getters.isAuth({ currentUserS: { id: 1 } })).toEqual(false);
   });
 
   test('userId', () => {

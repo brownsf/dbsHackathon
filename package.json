@@ -11,7 +11,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs --fix",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "coverage": "serve test/unit/coverage/lcov-report"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -98,10 +99,6 @@
   "jest": {
     "snapshotSerializers": [
       "<rootDir>/node_modules/jest-serializer-vue"
-    ],
-    "coverageReporters": [
-      "html",
-      "text-summary"
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/test/e2e/"

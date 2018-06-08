@@ -9,7 +9,7 @@ exports[`Login should render 1`] = `
       </a>
     </div>
     <div class="spacer"></div>
-    <div class="toolbar__items hidden-sm-and-down">
+    <div class="toolbar__items">
       <a href="#/topics" class="link btn btn--flat btn--router">
         <div class="btn__content">Topics</div>
       </a>

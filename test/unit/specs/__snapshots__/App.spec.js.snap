@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App should have a header 1`] = `
+<div
+  id="app"
+>
+  <div
+    class="application theme--light"
+    data-app="true"
+    id="app"
+  >
+    <div
+      class="application--wrap"
+    >
+      <!---->
+       
+      <main
+        class="content"
+        style="padding: 0px 0px 0px 0px;"
+      >
+        <div
+          class="content--wrap"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="chart-example"
+              id="chart"
+            >
+              <svg />
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`App should render 1`] = `
+<div id="app">
+  <!---->
+</div>
+`;
