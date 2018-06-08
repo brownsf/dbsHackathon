@@ -13,7 +13,7 @@ exports[`Login should render 1`] = `
       <a href="#/topics" class="link btn btn--flat btn--router">
         <div class="btn__content">Topics</div>
       </a>
-      <button type="button" class="link btn btn--flat" id="logoutBtn">
+      <button type="button" class="link logoutBtn btn btn--flat" id="logoutBtn">
         <div class="btn__content">Logout</div>
       </button>
     </div>

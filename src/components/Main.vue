@@ -56,17 +56,17 @@ export default {
         const simulation = d3
           .forceSimulation()
           // add nodes
-          
+
           .nodes(data);
 
         // add forces
         // we're going to add a charge to each node
         // also going to add a centering force
         simulation
-        
+
           .force('charge_force', d3.forceManyBody().strength(-20))
           .force('center_force', d3.forceCenter(width / 2, height / 2))
-          ;
+        ;
 
         svg.attr('width', width).attr('height', height);
 
@@ -121,11 +121,11 @@ export default {
 
         function tickActions() {
           node
-          .attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
-        .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); })
-        
+            .attr('cx', (d) => { d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+            .attr('cy', (d) => { d.y = Math.max(radius, Math.min(height - radius, d.y)); })
+
             .attr('transform', d => `translate(${d.x || 300},${d.y || 200})`,
-            
+
             );
         }
 
