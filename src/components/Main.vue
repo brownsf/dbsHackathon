@@ -43,6 +43,13 @@ export default {
       .datum(this.getTopics.sort((a, b) => a.votes < b.votes) || data)
       .call(chart);
   },
+  created() {
+    if (this.$store.getters.isAuth) {
+      this.$store.dispatch('getAllTopics');
+    } else {
+      this.$router.push('/login');
+    }
+  },
   methods: {
     bubbleChart: () => {
       let width = 600;
